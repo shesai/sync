@@ -6,14 +6,14 @@ on:
   workflow_dispatch:  
   
 jobs:
-  whoogle-sync:
+  one:
     runs-on: ubuntu-latest
     env:
       INPUT_GITHUB_TOKEN: ${{ secrets.PAT }}
-      INPUT_UPSTREAM_REPOSITORY: benbusby/whoogle-search
-      TARGET_REPOSITORY: shesai/whgle
-      INPUT_TARGET_BRANCH: main
-      INPUT_UPSTREAM_BRANCH: main
+      INPUT_UPSTREAM_REPOSITORY: ${{ secrets.UR1 }}
+      TARGET_REPOSITORY: ${{ secrets.TR1 }}
+      INPUT_TARGET_BRANCH: ${{ secrets.BR1 }}
+      INPUT_UPSTREAM_BRANCH: ${{ secrets.BR1 }}
     steps:
       - name: Sync
         run: |
@@ -29,15 +29,15 @@ jobs:
           git push --force --follow-tags --tags "${target_repo}" "${INPUT_UPSTREAM_BRANCH}:${INPUT_TARGET_BRANCH}"
           rm -rf "../${upstream_dir}"                
 
-  searx-sync:
+  two:
     runs-on: ubuntu-latest 
-    needs: whoogle-sync
+    needs: one
     env:
       INPUT_GITHUB_TOKEN: ${{ secrets.PAT }}
-      INPUT_UPSTREAM_REPOSITORY: yellowhat/searx-heroku
-      TARGET_REPOSITORY: shesai/seax
-      INPUT_TARGET_BRANCH: main
-      INPUT_UPSTREAM_BRANCH: main
+      INPUT_UPSTREAM_REPOSITORY: ${{ secrets.UR2 }}
+      TARGET_REPOSITORY: ${{ secrets.TR2 }}
+      INPUT_TARGET_BRANCH: ${{ secrets.BR1 }}
+      INPUT_UPSTREAM_BRANCH: ${{ secrets.BR1 }}
     steps:
       - name: Sync
         run: |
@@ -49,15 +49,15 @@ jobs:
           git push --force --follow-tags --tags "${target_repo}" "${INPUT_UPSTREAM_BRANCH}:${INPUT_TARGET_BRANCH}"
           rm -rf "../${upstream_dir}"    
 
-  searxng-sync:
+  three:
     runs-on: ubuntu-latest
-    needs: [whoogle-sync,searx-sync]
+    needs: [one,two]
     env:
       INPUT_GITHUB_TOKEN: ${{ secrets.PAT }}
-      INPUT_UPSTREAM_REPOSITORY: yellowhat/searx-heroku
-      TARGET_REPOSITORY: shesai/seax
-      INPUT_TARGET_BRANCH: searxng
-      INPUT_UPSTREAM_BRANCH: searxng
+      INPUT_UPSTREAM_REPOSITORY: ${{ secrets.UR2 }}
+      TARGET_REPOSITORY: ${{ secrets.TR2 }}
+      INPUT_TARGET_BRANCH: ${{ secrets.BR2 }}
+      INPUT_UPSTREAM_BRANCH: ${{ secrets.BR2 }}
     steps:
       - name: Sync
         run: |
